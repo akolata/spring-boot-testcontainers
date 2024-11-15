@@ -1,0 +1,14 @@
+###
+POST http://localhost:8080/api/v1/approvals
+Content-Type: application/json
+
+{
+  "description": "An example approval"
+}
+
+> {%
+    client.global.set("approval_id", response.body.id);
+%}
+
+###
+GET http://localhost:8080/api/v1/approvals/{{approval_id}}
