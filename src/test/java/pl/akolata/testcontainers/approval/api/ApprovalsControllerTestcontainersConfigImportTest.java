@@ -6,16 +6,14 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
-import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import org.testcontainers.utility.DockerImageName;
+import pl.akolata.testcontainers.TestcontainersConfiguration;
 import pl.akolata.testcontainers.approval.api.schema.ApprovalDTO;
 import pl.akolata.testcontainers.approval.domain.ApprovalsApplicationService;
 import pl.akolata.testcontainers.approval.domain.model.Approval;
@@ -32,15 +30,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 @Testcontainers
 @SpringBootTest
+@Import(TestcontainersConfiguration.class) // such usage is not documented in the Spring Boot documentation
+// username/password/schema not set
 @AutoConfigureMockMvc
-public class ApprovalsControllerTestcontainersTest {
-
-    @Container
-    @ServiceConnection
-    private static final PostgreSQLContainer<?> POSTGRESQL_CONTAINER = new PostgreSQLContainer<>(DockerImageName.parse("postgres:17.0"))
-            .withDatabaseName("testcontainers")
-            .withDatabaseName("postgres")
-            .withPassword("postgres");
+public class ApprovalsControllerTestcontainersConfigImportTest {
 
     @Autowired
     private MockMvc mvc;
